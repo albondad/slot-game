@@ -1,5 +1,7 @@
 import * as Phaser from "phaser";
 import { Tile } from "./types";
+import { getRandomTileRow } from "./utilities/get-random-tile-row";
+import { getTileValueByTileTexture } from "./utilities/get-tile-value-by-texture";
 
 const gameWidth = 1280;
 const gameHeight = 720;
@@ -101,7 +103,7 @@ export default class MainScene extends Phaser.Scene {
       let spriteX = 448;
 
       tileRow.forEach((tile) => {
-        const spriteTexture = this.getTileValueByTileTexture(tile.value);
+        const spriteTexture = getTileValueByTileTexture(tile.value);
         const sprite = this.add.sprite(0, 0, spriteTexture);
         sprite.setOrigin(0, 0);
         sprite.setPosition(spriteX, spriteY);
@@ -141,7 +143,7 @@ export default class MainScene extends Phaser.Scene {
   refreshTileRows() {
     const newTileRows = [];
     for (let i = 0; i < 27; i++) {
-      const randomTileRow = this.getRandomTileRow();
+      const randomTileRow = getRandomTileRow();
       newTileRows.push(randomTileRow);
     }
     for (let i = 0; i < 3; i++) {
@@ -153,45 +155,9 @@ export default class MainScene extends Phaser.Scene {
 
   setUpTileRows() {
     for (let i = 0; i < 3; i++) {
-      const randomTileRow = this.getRandomTileRow();
+      const randomTileRow = getRandomTileRow();
       this.tileRows.push(randomTileRow);
     }
-  }
-
-  getRandomTileRow() {
-    const randomTilesRow: Tile[] = [];
-    for (let i = 0; i < 3; i++) {
-      const randomTile = this.getRandomTile();
-      randomTilesRow.push(randomTile);
-    }
-    return randomTilesRow;
-  }
-
-  getRandomTile() {
-    const randomTileValue = this.getRandomTileValue();
-    const randomTile = {
-      value: randomTileValue,
-    };
-    return randomTile;
-  }
-
-  getRandomTileValue() {
-    const randomValue = Math.random();
-    const randomTileValue = randomValue <= 0.5 ? "x" : "o";
-    return randomTileValue;
-  }
-
-  getTileValueByTileTexture(tileValue) {
-    let tileTexture = "";
-    switch (tileValue) {
-      case "o":
-        tileTexture = "oImage";
-        break;
-      case "x":
-        tileTexture = "xImage";
-        break;
-    }
-    return tileTexture;
   }
 }
 
