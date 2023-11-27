@@ -117,7 +117,6 @@ export default class MainScene extends Phaser.Scene {
   }
 
   updateTileSpritesPosition() {
-    console.log();
     this.tileSpritesGroup?.children.iterate((child, index) => {
       const isFirstRow = index === 0 || index === 1 || index === 2;
       const isSecondRow = index === 3 || index === 4 || index === 5;
