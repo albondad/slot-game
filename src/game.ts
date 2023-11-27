@@ -6,6 +6,7 @@ const gameHeight = 720;
 const gameXCenter = gameWidth / 2;
 
 export default class MainScene extends Phaser.Scene {
+  barSpritesLayer: Phaser.GameObjects.Layer;
   goButtonSpriteLayer: Phaser.GameObjects.Layer;
   tileRows: Tile[][] = [];
   tileSpritesGroup: Phaser.GameObjects.Group;
@@ -24,16 +25,22 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
-    this.tileSpritesGroup = this.add.group();
-    this.tileSpritesLayer = this.add.layer();
-    this.tileSpritesLayer.setDepth(1);
-    const barSpriteLayer = this.add.layer();
-    barSpriteLayer.setDepth(2);
-    this.goButtonSpriteLayer = this.add.layer();
-    this.goButtonSpriteLayer.setDepth(3);
-
+    this.setupLayers();
+    this.setupGroups();
     this.setUpTileRows();
-    // set bup bar sprite layer
+    this.setupGoButtonSprite();
+    this.setupBarSprites();
+  }
+
+  update() {
+    this.updateTileSpritesPosition();
+  }
+
+  setupGroups() {
+    this.tileSpritesGroup = this.add.group();
+  }
+
+  setupBarSprites() {
     const topBarSprite = this.add.sprite(0, 0, "topBarImage");
     topBarSprite.setOrigin(0, 0);
 
@@ -41,23 +48,17 @@ export default class MainScene extends Phaser.Scene {
     bottomBarSprite.setOrigin(0, 0);
     bottomBarSprite.setY(448);
 
-    barSpriteLayer.add(topBarSprite);
-    barSpriteLayer.add(bottomBarSprite);
-
-    this.setupGoButtonLayer();
+    this.barSpritesLayer.add(topBarSprite);
+    this.barSpritesLayer.add(bottomBarSprite);
   }
 
-  update() {
-    this.updateTileSpritesPosition();
-  }
-
-  setupGoButtonLayer() {
+  setupGoButtonSprite() {
     const goButtonSprite = this.add.sprite(0, 0, "buttonImage");
     goButtonSprite.setOrigin(0, 0);
     goButtonSprite.setInteractive();
     const newGoButtonSpriteX = gameXCenter - goButtonSprite.width / 2;
-    goButtonSprite.setX(newGoButtonSpriteX);
-    goButtonSprite.setY(528);
+    const newGoButtonSpriteY = 528;
+    goButtonSprite.setPosition(newGoButtonSpriteX, newGoButtonSpriteY);
 
     goButtonSprite.on(Phaser.Input.Events.POINTER_OVER, () => {
       goButtonSprite.setAlpha(0.75);
@@ -77,7 +78,6 @@ export default class MainScene extends Phaser.Scene {
       goButtonSprite.setAlpha(1);
     });
 
-    const goButtonLayer = this.add.layer();
     this.goButtonSpriteLayer.add(goButtonSprite);
   }
 
@@ -142,6 +142,14 @@ export default class MainScene extends Phaser.Scene {
     this.tileRows = newTileRows;
   }
 
+  setupLayers() {
+    this.tileSpritesLayer = this.add.layer();
+    this.tileSpritesLayer.setDepth(1);
+    this.barSpritesLayer = this.add.layer();
+    this.barSpritesLayer.setDepth(2);
+    this.goButtonSpriteLayer = this.add.layer();
+    this.goButtonSpriteLayer.setDepth(3);
+  }
   setUpTileRows() {
     for (let i = 0; i < 3; i++) {
       const randomTileRow = this.getRandomTileRow();
