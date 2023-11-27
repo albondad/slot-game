@@ -8,11 +8,11 @@ const gameHeight = 720;
 const gameXCenter = gameWidth / 2;
 
 export default class MainScene extends Phaser.Scene {
-  barSpritesLayer: Phaser.GameObjects.Layer;
-  goButtonSpriteLayer: Phaser.GameObjects.Layer;
-  tileRows: Tile[][] = [];
-  tileSpritesGroup: Phaser.GameObjects.Group;
-  tileSpritesLayer: Phaser.GameObjects.Layer;
+  barSpritesLayer;
+  goButtonSpriteLayer;
+  tileRows;
+  tileSpritesGroup;
+  tileSpritesLayer;
 
   constructor() {
     super("mainScene");
@@ -64,32 +64,32 @@ export default class MainScene extends Phaser.Scene {
   }
 
   setupGoButtonSprite() {
-    const goButtonSprite = this.add.sprite(0, 0, "buttonImage");
-    goButtonSprite.setOrigin(0, 0);
-    goButtonSprite.setInteractive();
-    const newGoButtonSpriteX = gameXCenter - goButtonSprite.width / 2;
-    const newGoButtonSpriteY = 528;
-    goButtonSprite.setPosition(newGoButtonSpriteX, newGoButtonSpriteY);
+    const sprite = this.add.sprite(0, 0, "buttonImage");
+    sprite.setOrigin(0, 0);
+    sprite.setInteractive();
+    const spriteX = gameXCenter - sprite.width / 2;
+    const spriteY = 528;
+    sprite.setPosition(spriteX, spriteY);
 
-    goButtonSprite.on(Phaser.Input.Events.POINTER_OVER, () => {
-      goButtonSprite.setAlpha(0.75);
+    sprite.on(Phaser.Input.Events.POINTER_OVER, () => {
+      sprite.setAlpha(0.75);
     });
 
-    goButtonSprite.on(Phaser.Input.Events.POINTER_DOWN, () => {
-      goButtonSprite.setAlpha(0.5);
+    sprite.on(Phaser.Input.Events.POINTER_DOWN, () => {
+      sprite.setAlpha(0.5);
       this.refreshTileRows();
       this.refreshTileSprites();
     });
 
-    goButtonSprite.on(Phaser.Input.Events.POINTER_UP, () => {
-      goButtonSprite.setAlpha(0.75);
+    sprite.on(Phaser.Input.Events.POINTER_UP, () => {
+      sprite.setAlpha(0.75);
     });
 
-    goButtonSprite.on(Phaser.Input.Events.POINTER_OUT, () => {
-      goButtonSprite.setAlpha(1);
+    sprite.on(Phaser.Input.Events.POINTER_OUT, () => {
+      sprite.setAlpha(1);
     });
 
-    this.goButtonSpriteLayer.add(goButtonSprite);
+    this.goButtonSpriteLayer.add(sprite);
   }
 
   refreshTileSprites() {
@@ -97,6 +97,7 @@ export default class MainScene extends Phaser.Scene {
       child.destroy();
       return true;
     });
+
     let spriteY = 320 - (this.tileRows.length - 1) * 128;
 
     this.tileRows.forEach((tileRow) => {
@@ -124,16 +125,14 @@ export default class MainScene extends Phaser.Scene {
       const isThirdRow = index === 6 || index === 7 || index === 8;
       const isOtherRow = index >= 9;
 
-      const childAsSprite = child as Phaser.GameObjects.Sprite;
-
-      if (isFirstRow && childAsSprite.y < 64) {
-        childAsSprite.y += 64;
-      } else if (isSecondRow && childAsSprite.y < 192) {
-        childAsSprite.y += 64;
-      } else if (isThirdRow && childAsSprite.y < 320) {
-        childAsSprite.y += 64;
-      } else if (isOtherRow && childAsSprite.y <= 448) {
-        childAsSprite.y += 64;
+      if (isFirstRow && child.y < 64) {
+        child.y += 64;
+      } else if (isSecondRow && child.y < 192) {
+        child.y += 64;
+      } else if (isThirdRow && child.y < 320) {
+        child.y += 64;
+      } else if (isOtherRow && child.y <= 448) {
+        child.y += 64;
       }
 
       return true;
