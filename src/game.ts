@@ -6,12 +6,10 @@ const gameHeight = 720;
 const gameXCenter = gameWidth / 2;
 
 export default class MainScene extends Phaser.Scene {
-  startTime: Number;
-  tempSprite: Phaser.GameObjects.Sprite;
+  goButtonSpriteLayer: Phaser.GameObjects.Layer;
   tileRows: Tile[][] = [];
   tileSpritesGroup: Phaser.GameObjects.Group;
   tileSpritesLayer: Phaser.GameObjects.Layer;
-  goButtonSpriteLayer: Phaser.GameObjects.Layer;
 
   constructor() {
     super("mainScene");
