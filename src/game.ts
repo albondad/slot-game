@@ -27,9 +27,9 @@ export default class MainScene extends Phaser.Scene {
   create() {
     this.setupLayers();
     this.setupGroups();
-    this.setUpTileRows();
-    this.setupGoButtonSprite();
     this.setupBarSprites();
+    this.setupGoButtonSprite();
+    this.setUpTileRows();
   }
 
   update() {
@@ -38,6 +38,15 @@ export default class MainScene extends Phaser.Scene {
 
   setupGroups() {
     this.tileSpritesGroup = this.add.group();
+  }
+
+  setupLayers() {
+    this.tileSpritesLayer = this.add.layer();
+    this.tileSpritesLayer.setDepth(1);
+    this.barSpritesLayer = this.add.layer();
+    this.barSpritesLayer.setDepth(2);
+    this.goButtonSpriteLayer = this.add.layer();
+    this.goButtonSpriteLayer.setDepth(3);
   }
 
   setupBarSprites() {
@@ -142,14 +151,6 @@ export default class MainScene extends Phaser.Scene {
     this.tileRows = newTileRows;
   }
 
-  setupLayers() {
-    this.tileSpritesLayer = this.add.layer();
-    this.tileSpritesLayer.setDepth(1);
-    this.barSpritesLayer = this.add.layer();
-    this.barSpritesLayer.setDepth(2);
-    this.goButtonSpriteLayer = this.add.layer();
-    this.goButtonSpriteLayer.setDepth(3);
-  }
   setUpTileRows() {
     for (let i = 0; i < 3; i++) {
       const randomTileRow = this.getRandomTileRow();
