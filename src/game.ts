@@ -84,7 +84,10 @@ export default class MainScene extends Phaser.Scene {
   }
 
   refreshTileSprites() {
-    this.tileSpritesGroup.children.each((child) => child.destroy());
+    this.tileSpritesGroup.children.each((child) => {
+      child.destroy();
+      return true;
+    });
     let spriteY = 320 - (this.tileRows.length - 1) * 128;
 
     this.tileRows.forEach((tileRow) => {
@@ -112,15 +115,19 @@ export default class MainScene extends Phaser.Scene {
       const isThirdRow = index === 6 || index === 7 || index === 8;
       const isOtherRow = index >= 9;
 
-      if (isFirstRow && child.y < 64) {
-        child.y += 64;
-      } else if (isSecondRow && child.y < 192) {
-        child.y += 64;
-      } else if (isThirdRow && child.y < 320) {
-        child.y += 64;
-      } else if (isOtherRow && child.y <= 448) {
-        child.y += 64;
+      const childAsSprite = child as Phaser.GameObjects.Sprite;
+
+      if (isFirstRow && childAsSprite.y < 64) {
+        childAsSprite.y += 64;
+      } else if (isSecondRow && childAsSprite.y < 192) {
+        childAsSprite.y += 64;
+      } else if (isThirdRow && childAsSprite.y < 320) {
+        childAsSprite.y += 64;
+      } else if (isOtherRow && childAsSprite.y <= 448) {
+        childAsSprite.y += 64;
       }
+
+      return true;
     });
   }
 
