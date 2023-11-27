@@ -1,5 +1,4 @@
 import * as Phaser from "phaser";
-import { Tile } from "./types";
 import { getRandomTileRow } from "./utilities/get-random-tile-row";
 import { getTileValueByTileTexture } from "./utilities/get-tile-value-by-texture";
 
