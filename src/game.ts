@@ -151,6 +151,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   setUpTileRows() {
+    this.tileRows = [];
     for (let i = 0; i < 3; i++) {
       const randomTileRow = getRandomTileRow();
       this.tileRows.push(randomTileRow);
