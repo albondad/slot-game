@@ -118,18 +118,22 @@ export default class MainScene extends Phaser.Scene {
 
   updateTileSpritesPosition() {
     this.tileSpritesGroup?.children.iterate((child, index) => {
-      const isFirstRow = index === 0 || index === 1 || index === 2;
-      const isSecondRow = index === 3 || index === 4 || index === 5;
-      const isThirdRow = index === 6 || index === 7 || index === 8;
-      const isOtherRow = index >= 9;
+      const shouldFirstRowChildMove = index >= 0 && index <= 2 && child.y < 64;
 
-      if (isFirstRow && child.y < 64) {
-        child.y += 64;
-      } else if (isSecondRow && child.y < 192) {
-        child.y += 64;
-      } else if (isThirdRow && child.y < 320) {
-        child.y += 64;
-      } else if (isOtherRow && child.y <= 448) {
+      const shouldSecondRowChildMove =
+        index >= 3 && index <= 5 && child.y < 192;
+
+      const shouldThirdRowChildMove = index >= 6 && index <= 8 && child.y < 320;
+
+      const shouldOtherRowChildMove = index >= 9 && child.y < 448;
+
+      const shouldChildMove =
+        shouldFirstRowChildMove ||
+        shouldSecondRowChildMove ||
+        shouldThirdRowChildMove ||
+        shouldOtherRowChildMove;
+
+      if (shouldChildMove) {
         child.y += 64;
       }
 
