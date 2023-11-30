@@ -15,6 +15,8 @@ export default class MainScene extends Phaser.Scene {
   highlightSpritesGroup;
   highlightSpritesLayer;
   shouldUpdateTileSprites;
+  score;
+  scoreText;
 
   constructor() {
     super("mainScene");
@@ -30,12 +32,22 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
+    this.score = 0;
     this.shouldUpdateTileSprites = false;
     this.setupLayers();
     this.setupGroups();
     this.setupBarSprites();
     this.setupGoButtonSprite();
     this.setUpTileRows();
+    this.updateScoreText();
+  }
+
+  updateScoreText() {
+    this.scoreText?.destroy();
+    this.scoreText = this.add.text(448, 16, `Score: ${this.score}`, {
+      fontFamily: "Arial",
+    });
+    this.scoreText.setDepth(100);
   }
 
   update() {
@@ -156,8 +168,8 @@ export default class MainScene extends Phaser.Scene {
       }
 
       if (index === 0 && child.y >= 64) {
-        console.log(index, child.y);
         this.refreshHighlightSprites();
+        this.updateScoreText();
         this.shouldUpdateTileSprites = false;
       }
 
@@ -203,6 +215,8 @@ export default class MainScene extends Phaser.Scene {
       }
 
       if (hasHorizontalMatch) {
+        this.score += 100;
+
         messages.push(`there is a horizontal match in row ${rowIndex + 1}`);
         this.tileRows[rowIndex].forEach((element) => (element.isMatch = true));
       }
@@ -222,6 +236,8 @@ export default class MainScene extends Phaser.Scene {
       }
 
       if (hasVerticalMatch) {
+        this.score += 100;
+
         messages.push(`there is a vertical match in column ${columnIndex + 1}`);
 
         for (let rowIndex = 0; rowIndex < 3; rowIndex++) {
@@ -243,6 +259,8 @@ export default class MainScene extends Phaser.Scene {
     }
 
     if (hasTopToBottomMatch) {
+      this.score += 100;
+
       messages.push(`there is a top left to bottom right match`);
 
       for (let index = 0; index < 3; index++) {
@@ -263,6 +281,8 @@ export default class MainScene extends Phaser.Scene {
     }
 
     if (hasBottomLeftToTopRightMatch) {
+      this.score += 100;
+
       messages.push(`there is a bottom left to top right match`);
 
       for (let index = 0; index < 3; index++) {
